@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────
-# GLOBAL CSS — Clean Elegant Light Theme
+# GLOBAL CSS — Clean Elegant Light Theme (FIXED)
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -31,6 +31,37 @@ html, body, [data-testid="stAppViewContainer"] {
     background: #F7F8FA !important;
     color: #1A1F2E !important;
     font-family: 'DM Sans', sans-serif !important;
+}
+
+/* FIX 1: Pastikan SEMUA teks default berwarna gelap */
+[data-testid="stAppViewContainer"] p,
+[data-testid="stAppViewContainer"] span,
+[data-testid="stAppViewContainer"] div,
+[data-testid="stAppViewContainer"] li,
+[data-testid="stAppViewContainer"] h1,
+[data-testid="stAppViewContainer"] h2,
+[data-testid="stAppViewContainer"] h3,
+[data-testid="stAppViewContainer"] h4,
+[data-testid="stAppViewContainer"] h5,
+[data-testid="stAppViewContainer"] h6,
+[data-testid="stAppViewContainer"] label,
+[data-testid="stAppViewContainer"] .stMarkdown,
+[data-testid="stAppViewContainer"] .st-emotion-cache-1l03zft,
+[data-testid="stAppViewContainer"] .st-emotion-cache-1q7q0r2 {
+    color: #1A1F2E !important;
+}
+
+/* Override untuk teks sekunder / label */
+[data-testid="stAppViewContainer"] .st-emotion-cache-1q7q0r2 p,
+[data-testid="stAppViewContainer"] .st-emotion-cache-1l03zft p {
+    color: #3D4863 !important;
+}
+
+/* Streamlit native widgets */
+.stSelectbox label, .stNumberInput label, .stSlider label,
+.stRadio label, .stMultiselect label, .stToggle label,
+.stDownloadButton label, .stButton label {
+    color: #3D4863 !important;
 }
 
 [data-testid="stSidebar"] {
@@ -45,6 +76,24 @@ html, body, [data-testid="stAppViewContainer"] {
 
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
+
+/* FIX 2: Sidebar toggle button selalu terlihat saat ditutup */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #1A3A6C !important;
+    color: #FFFFFF !important;
+    border-radius: 0 8px 8px 0 !important;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15) !important;
+    z-index: 999 !important;
+}
+[data-testid="collapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] svg {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #F7F8FA; }
@@ -93,45 +142,16 @@ html, body, [data-testid="stAppViewContainer"] {
     transform: translateY(-1px) !important;
 }
 
-/* ── Sidebar collapsed button ── */
-[data-testid="collapsedControl"] {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    background: #1A3A6C !important;
-    color: white !important;
-    border-radius: 0 8px 8px 0 !important;
-}
+/* Streamlit form elements */
+.stSelectbox > div > div,
+.stNumberInput > div > div > input,
+.stSlider { font-family: 'DM Sans', sans-serif !important; }
 
-/* ── Widget overrides (light theme) ── */
-.stSelectbox > div > div {
-    background: #FFFFFF !important;
-    color: #1A1F2E !important;
-    border: 1px solid #E8EBF0 !important;
-    border-radius: 8px !important;
-}
-.stSelectbox label, .stSlider label, .stNumberInput label, .stRadio label {
-    color: #3D4863 !important;
-    font-weight: 500 !important;
-}
-.stSlider > div > div > div {
-    background: #1A3A6C !important;
-}
-.stRadio > div {
-    flex-direction: row;
-    gap: 12px;
-}
-.stRadio label p {
-    color: #3D4863 !important;
-}
-.stNumberInput input {
-    color: #1A1F2E !important;
-    background: #FFFFFF !important;
-    border: 1px solid #E8EBF0 !important;
-    border-radius: 8px !important;
-}
-[data-testid="stMarkdownContainer"] p {
-    color: #3D4863 !important;
+/* FIX 3: Main content container dengan max-width */
+.main-content-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
 /* Metric card */
@@ -144,7 +164,10 @@ html, body, [data-testid="stAppViewContainer"] {
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: box-shadow 0.2s, transform 0.2s;
-    min-height: 140px;              /* konsisten tinggi */
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .metric-card:hover {
     box-shadow: 0 6px 24px rgba(0,0,0,0.08);
@@ -175,7 +198,7 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .metric-sub {
     font-size: 12px;
-    color: #A8B3CC;
+    color: #6B7A99;
     margin-top: 8px;
     font-weight: 400;
 }
@@ -190,13 +213,13 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .section-sub {
     font-size: 14px;
-    color: #8895B3;
+    color: #6B7A99;
     margin: 0 0 28px;
     font-weight: 400;
 }
 
 /* Divider */
-.divider { height: 1px; background: #E8EBF0; margin: 32px 0; }  /* lebih lega */
+.divider { height: 1px; background: #E8EBF0; margin: 32px 0; }
 
 /* Brand header sidebar */
 .brand-wrap {
@@ -208,7 +231,7 @@ html, body, [data-testid="stAppViewContainer"] {
     margin-bottom: 12px;
 }
 .brand-name { font-size: 16px; font-weight: 700; color: #1A1F2E; line-height: 1; }
-.brand-tag { font-size: 10px; color: #A8B3CC; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
+.brand-tag { font-size: 10px; color: #6B7A99; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
 
 /* Nav section label */
 .nav-section {
@@ -216,7 +239,7 @@ html, body, [data-testid="stAppViewContainer"] {
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #C4CEDF;
+    color: #A8B3CC;
     padding: 8px 18px 4px;
 }
 
@@ -228,14 +251,13 @@ html, body, [data-testid="stAppViewContainer"] {
     border: 1.5px solid;
     background: #FFFFFF;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    min-height: 200px;            /* biar sejajar form */
 }
 .result-label {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #A8B3CC;
+    color: #6B7A99;
     margin-bottom: 10px;
 }
 .result-title {
@@ -257,7 +279,7 @@ html, body, [data-testid="stAppViewContainer"] {
 .rec-MEDIUM_HIGH { background: #FFF8F2; border-color: #EA580C; }
 .rec-MEDIUM { background: #FEFCE8; border-color: #CA8A04; }
 .rec-LOW { background: #F0FDF4; border-color: #16A34A; }
-.rec-title { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #A8B3CC; margin-bottom: 6px; }
+.rec-title { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6B7A99; margin-bottom: 6px; }
 .rec-text { font-size: 13px; line-height: 1.65; color: #3D4863; }
 
 /* Styled table */
@@ -269,7 +291,7 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .styled-table th {
     background: #F7F8FA;
-    color: #8895B3;
+    color: #6B7A99;
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -295,14 +317,13 @@ html, body, [data-testid="stAppViewContainer"] {
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    min-height: 400px;            /* agar sejajar result */
 }
 .form-label {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #8895B3;
+    color: #6B7A99;
     margin-bottom: 16px;
 }
 
@@ -326,7 +347,7 @@ html, body, [data-testid="stAppViewContainer"] {
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 12px;
-    color: #8895B3;
+    color: #6B7A99;
 }
 .computed-key { font-family: 'DM Mono'; font-weight: 500; color: #1A3A6C; }
 
@@ -366,6 +387,37 @@ html, body, [data-testid="stAppViewContainer"] {
 .stat-pct { font-family: 'DM Mono'; font-size: 13px; color: #6B7A99; }
 .stat-bar-wrap { width: 80px; height: 5px; background: #F0F2F7; border-radius: 3px; overflow: hidden; }
 .stat-bar { height: 100%; border-radius: 3px; }
+
+/* FIX 3: Chart containers dengan spacing konsisten */
+.chart-card {
+    background: #FFFFFF;
+    border: 1px solid #E8EBF0;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    min-height: 320px;
+}
+
+/* Spacing antar section */
+.page-section {
+    margin-bottom: 32px;
+}
+
+/* Hero section spacing */
+.hero-section {
+    padding: 24px 0 16px;
+}
+
+/* Info box */
+.info-box {
+    background: #F7F9FF;
+    border: 1px solid #E0E7FF;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #3D4863;
+    line-height: 1.6;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -420,11 +472,11 @@ if "page" not in st.session_state:
 def load_model():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     files = {
-    "model":    os.path.join(BASE_DIR, "gradient_boosting_model.pkl"),
-    "scaler":   os.path.join(BASE_DIR, "scaler.pkl"),
-    "encoder":  os.path.join(BASE_DIR, "label_encoder.pkl"),
-    "features": os.path.join(BASE_DIR, "feature_columns.json"),
-}
+        "model":    os.path.join(BASE_DIR, "gradient_boosting_model.pkl"),
+        "scaler":   os.path.join(BASE_DIR, "scaler.pkl"),
+        "encoder":  os.path.join(BASE_DIR, "label_encoder.pkl"),
+        "features": os.path.join(BASE_DIR, "feature_columns.json"),
+    }
     missing = [v for v in files.values() if not os.path.exists(v)]
     if missing:
         return None, None, None, None, missing
@@ -482,8 +534,8 @@ with st.sidebar:
     st.markdown(f"""
     <div style="padding:0 6px;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <span style="color:#8895B3;">{ICONS["history"]}</span>
-            <span style="font-size:11px;font-weight:700;color:#A8B3CC;text-transform:uppercase;letter-spacing:0.1em;">Riwayat Sesi</span>
+            <span style="color:#6B7A99;">{ICONS["history"]}</span>
+            <span style="font-size:11px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:0.1em;">Riwayat Sesi</span>
             <span style="margin-left:auto;background:#EEF2FF;color:#3730A3;font-size:11px;font-family:'DM Mono';padding:2px 9px;border-radius:20px;font-weight:600;">{n_hist}</span>
         </div>
     </div>
@@ -529,7 +581,7 @@ if st.session_state.page == "Home":
     col_hero, col_visual = st.columns([3, 2], gap="large")
     with col_hero:
         st.markdown("""
-        <div class="fade-up" style="padding-top:12px;">
+        <div class="fade-up hero-section">
             <div style="display:inline-flex;align-items:center;gap:8px;background:#EEF2FF;border:1px solid #C7D2FE;border-radius:100px;padding:5px 14px;margin-bottom:20px;">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <circle cx="6" cy="6" r="6" fill="#4F46E5" opacity="0.15"/>
@@ -541,7 +593,7 @@ if st.session_state.page == "Home":
                 Crime Hotspot<br>
                 <span style="color:#1A3A6C;">Prediction</span>
             </h1>
-            <p style="font-size:15px;color:#6B7A99;line-height:1.75;max-width:440px;margin:0 0 32px;font-weight:400;">
+            <p style="font-size:15px;color:#3D4863;line-height:1.75;max-width:440px;margin:0 0 32px;font-weight:400;">
                 Sistem prediksi berbasis <strong style="color:#1A3A6C;font-weight:600;">Gradient Boosting</strong> untuk mengidentifikasi titik rawan kejahatan di kota Chicago dari data historis 2001–2017.
             </p>
         </div>
@@ -555,7 +607,7 @@ if st.session_state.page == "Home":
         # Distribution mini-chart
         st.markdown("""
         <div style="background:#FFFFFF;border:1px solid #E8EBF0;border-radius:18px;padding:22px 24px;box-shadow:0 4px 20px rgba(0,0,0,0.05);margin-top:12px;">
-            <div style="font-size:11px;font-weight:700;color:#A8B3CC;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">Distribusi Kelas Dataset</div>
+            <div style="font-size:11px;font-weight:700;color:#6B7A99;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">Distribusi Kelas Dataset</div>
             <div class="stat-row">
                 <div class="stat-dot" style="background:#CA8A04;"></div>
                 <span class="stat-name">Medium Risk</span>
@@ -582,17 +634,17 @@ if st.session_state.page == "Home":
             </div>
             <div style="margin-top:18px;padding-top:14px;border-top:1px solid #F0F2F7;display:flex;gap:16px;">
                 <div>
-                    <div style="font-size:10px;color:#A8B3CC;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Total Baris</div>
+                    <div style="font-size:10px;color:#6B7A99;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Total Baris</div>
                     <div style="font-size:16px;font-weight:700;font-family:'DM Mono';color:#1A1F2E;margin-top:2px;">107,687</div>
                 </div>
                 <div style="width:1px;background:#F0F2F7;"></div>
                 <div>
-                    <div style="font-size:10px;color:#A8B3CC;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Periode</div>
+                    <div style="font-size:10px;color:#6B7A99;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Periode</div>
                     <div style="font-size:16px;font-weight:700;font-family:'DM Mono';color:#1A1F2E;margin-top:2px;">2001–2017</div>
                 </div>
                 <div style="width:1px;background:#F0F2F7;"></div>
                 <div>
-                    <div style="font-size:10px;color:#A8B3CC;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Distrik</div>
+                    <div style="font-size:10px;color:#6B7A99;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Distrik</div>
                     <div style="font-size:16px;font-weight:700;font-family:'DM Mono';color:#1A1F2E;margin-top:2px;">25</div>
                 </div>
             </div>
@@ -602,7 +654,7 @@ if st.session_state.page == "Home":
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
     # Metric cards
-    col1, col2, col3, col4 = st.columns(4, gap="medium")
+    col1, col2, col3, col4 = st.columns(4)
     metrics = [
         (col1, "107,687", "Total Data",      "Baris dari 4 file Chicago",   "#1A3A6C"),
         (col2, "25",      "Distrik",         "Area kota Chicago",            "#4F46E5"),
@@ -630,11 +682,11 @@ if st.session_state.page == "Home":
         ("MEDIUM_RISK",      "#CA8A04", "#FEFCE8", "#FEF9C3", "Pencurian, Vandalisme, Narkotika, Penipuan, Pelanggaran Senjata"),
         ("LOW_RISK",         "#16A34A", "#F0FDF4", "#DCFCE7", "Pelanggaran Ringan, Perjudian, Gangguan Ketertiban, Pelanggaran Izin"),
     ]
-    cols = st.columns(4, gap="medium")
+    cols = st.columns(4)
     for col, (risk, color, bg, border_bg, desc) in zip(cols, risk_info):
         with col:
             st.markdown(f"""
-            <div style="background:{bg};border:1px solid {border_bg};border-radius:16px;padding:20px;height:100%;transition:box-shadow 0.2s;">
+            <div style="background:{bg};border:1px solid {border_bg};border-radius:16px;padding:20px;height:100%;min-height:160px;transition:box-shadow 0.2s;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
                     <div style="width:10px;height:10px;border-radius:50%;background:{color};flex-shrink:0;box-shadow:0 0 0 3px {border_bg};"></div>
                     <span style="font-size:11px;font-weight:700;color:{color};letter-spacing:0.08em;text-transform:uppercase;">{risk.replace('_',' ')}</span>
@@ -649,24 +701,24 @@ if st.session_state.page == "Home":
     with col_model:
         st.markdown("""
         <div style="background:#FFFFFF;border:1px solid #E8EBF0;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-            <div style="font-size:11px;font-weight:700;color:#A8B3CC;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;">Model Terbaik</div>
+            <div style="font-size:11px;font-weight:700;color:#6B7A99;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;">Model Terbaik</div>
             <div style="font-size:20px;font-weight:700;color:#1A3A6C;margin-bottom:4px;">Gradient Boosting</div>
-            <div style="font-size:13px;color:#8895B3;margin-bottom:18px;">n_estimators=100 · max_depth=5</div>
+            <div style="font-size:13px;color:#6B7A99;margin-bottom:18px;">n_estimators=100 · max_depth=5</div>
             <div style="display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F0F2F7;">
-                    <span style="font-size:12px;color:#6B7A99;">Test Accuracy</span>
+                    <span style="font-size:12px;color:#3D4863;">Test Accuracy</span>
                     <span style="font-family:'DM Mono';font-size:13px;font-weight:600;color:#059669;">59.31%</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F0F2F7;">
-                    <span style="font-size:12px;color:#6B7A99;">Precision</span>
+                    <span style="font-size:12px;color:#3D4863;">Precision</span>
                     <span style="font-family:'DM Mono';font-size:13px;font-weight:600;color:#1A3A6C;">59.17%</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F0F2F7;">
-                    <span style="font-size:12px;color:#6B7A99;">Overfit Gap</span>
+                    <span style="font-size:12px;color:#3D4863;">Overfit Gap</span>
                     <span style="font-family:'DM Mono';font-size:13px;font-weight:600;color:#059669;">0.0149</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
-                    <span style="font-size:12px;color:#6B7A99;">SMOTE</span>
+                    <span style="font-size:12px;color:#3D4863;">SMOTE</span>
                     <span style="font-size:12px;font-weight:600;color:#DC2626;">Tidak digunakan</span>
                 </div>
             </div>
@@ -674,7 +726,7 @@ if st.session_state.page == "Home":
         """, unsafe_allow_html=True)
 
     with col_feat:
-        st.markdown('<div style="font-size:14px;font-weight:600;color:#3D4863;margin-bottom:12px;">12 Fitur Input Model</div>', unsafe_allow_html=True)
+        st.markdown('<div style="font-size:14px;font-weight:600;color:#1A1F2E;margin-bottom:12px;">12 Fitur Input Model</div>', unsafe_allow_html=True)
         features_list = [
             ("District",   "Nomor distrik Chicago (1–25)"),
             ("Hour",       "Jam kejadian (0–23)"),
@@ -697,7 +749,7 @@ if st.session_state.page == "Home":
                     st.markdown(f"""
                     <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #F0F2F7;">
                         <span style="font-family:'DM Mono';font-size:12px;font-weight:500;color:#1A3A6C;white-space:nowrap;padding-top:1px;">{fname}</span>
-                        <span style="font-size:12px;color:#8895B3;line-height:1.4;">{fdesc}</span>
+                        <span style="font-size:12px;color:#3D4863;line-height:1.4;">{fdesc}</span>
                     </div>""", unsafe_allow_html=True)
 
 
@@ -787,7 +839,7 @@ elif st.session_state.page == "Prediksi":
                     <div class="result-box fade-in" style="border-color:{border_map[pred_label]};background:{bg_map[pred_label]};">
                         <div class="result-label">Prediksi Tingkat Risiko</div>
                         <div class="result-title" style="color:{color};">{RISK_LABELS[pred_label]}</div>
-                        <div style="margin-top:10px;font-size:13px;color:#8895B3;">
+                        <div style="margin-top:10px;font-size:13px;color:#6B7A99;">
                             Distrik {district} &nbsp;·&nbsp; Jam {hour:02d}:00 &nbsp;·&nbsp; {'Malam' if is_night else 'Siang'}
                         </div>
                     </div>""", unsafe_allow_html=True)
@@ -807,7 +859,7 @@ elif st.session_state.page == "Prediksi":
                         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
                         font=dict(color='#6B7A99', family='DM Sans'),
                         xaxis=dict(showgrid=False, showticklabels=False, range=[0,115]),
-                        yaxis=dict(showgrid=False, tickfont=dict(size=12, color='#8895B3')),
+                        yaxis=dict(showgrid=False, tickfont=dict(size=12, color='#6B7A99')),
                         margin=dict(l=10, r=60, t=16, b=10),
                         height=175, showlegend=False,
                     )
@@ -831,12 +883,12 @@ elif st.session_state.page == "Prediksi":
                     st.error(f"Error saat prediksi: {e}")
             else:
                 st.markdown("""
-                <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 20px;text-align:center;background:#FFFFFF;border:1px solid #E8EBF0;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div style="height:100%;min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 20px;text-align:center;background:#FFFFFF;border:1px solid #E8EBF0;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
                     <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#D1D8E0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:14px;">
                         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <div style="font-size:15px;font-weight:600;color:#A8B3CC;margin-bottom:6px;">Siap untuk prediksi</div>
-                    <div style="font-size:13px;color:#C4CEDF;">Isi form di sebelah kiri lalu<br>klik "Jalankan Prediksi"</div>
+                    <div style="font-size:15px;font-weight:600;color:#6B7A99;margin-bottom:6px;">Siap untuk prediksi</div>
+                    <div style="font-size:13px;color:#A8B3CC;">Isi form di sebelah kiri lalu<br>klik "Jalankan Prediksi"</div>
                 </div>""", unsafe_allow_html=True)
 
 
@@ -862,11 +914,13 @@ elif st.session_state.page == "Analisis Data":
 
     LIGHT_BG = '#FFFFFF'
     GRID_C   = '#F0F2F7'
-    TICK_C   = '#8895B3'
+    TICK_C   = '#6B7A99'
     FONT_F   = 'DM Sans'
 
-    col1, col2 = st.columns(2, gap="medium")
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+    col1, col2 = st.columns(2, gap="large")
     with col1:
+        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         counts = demo_df["Risk_Category"].value_counts()
         fig = go.Figure(go.Bar(
             x=[c.replace("_RISK","").replace("_"," ") for c in counts.index],
@@ -884,8 +938,10 @@ elif st.session_state.page == "Analisis Data":
             margin=dict(l=10,r=10,t=44,b=10), height=280, showlegend=False,
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
+        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         hour_counts = demo_df.groupby("Hour").size().reset_index(name="count")
         fig = go.Figure(go.Scatter(
             x=hour_counts["Hour"], y=hour_counts["count"],
@@ -903,9 +959,13 @@ elif st.session_state.page == "Analisis Data":
             margin=dict(l=10,r=10,t=44,b=10), height=280, showlegend=False,
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    col3, col4 = st.columns(2, gap="medium")
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+    col3, col4 = st.columns(2, gap="large")
     with col3:
+        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         month_names = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"]
         mc = demo_df.groupby("Month").size().reset_index(name="count")
         fig = go.Figure(go.Bar(
@@ -921,8 +981,10 @@ elif st.session_state.page == "Analisis Data":
             margin=dict(l=10,r=10,t=44,b=10), height=280, showlegend=False,
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col4:
+        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         demo_df["is_night"] = ((demo_df["Hour"] >= 22) | (demo_df["Hour"] < 5)).astype(int)
         grp = demo_df.groupby(["Risk_Category","is_night"]).size().reset_index(name="count")
         fig = px.bar(grp, x="Risk_Category", y="count", color="is_night", barmode="group",
@@ -940,9 +1002,11 @@ elif st.session_state.page == "Analisis Data":
             margin=dict(l=10,r=10,t=44,b=10), height=280,
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    <div style="background:#F7F9FF;border:1px solid #E0E7FF;border-radius:10px;padding:12px 16px;font-size:12px;color:#6B7A99;">
+    <div class="info-box">
         <strong style="color:#4F46E5;">Catatan:</strong> Data visualisasi menggunakan sampel representatif dari dataset Chicago 2001–2017. Distribusi kelas: MEDIUM_RISK 49.6% · MEDIUM_HIGH_RISK 34.8% · LOW_RISK 10.0% · HIGH_RISK 5.6%
     </div>""", unsafe_allow_html=True)
 
@@ -980,13 +1044,15 @@ elif st.session_state.page == "Peta Kejahatan":
     ]
     map_df = pd.DataFrame(district_data)
 
-    fc, _ = st.columns([2,3], gap="medium")
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+    fc, _ = st.columns([2,3])
     with fc:
         risk_filter = st.multiselect("Filter Tingkat Risiko", options=list(RISK_LABELS.values()), default=list(RISK_LABELS.values()))
     label_to_key = {v:k for k,v in RISK_LABELS.items()}
     selected_keys = [label_to_key[r] for r in risk_filter]
     filtered = map_df[map_df["risk"].isin(selected_keys)]
 
+    st.markdown('<div class="chart-card" style="padding:0;overflow:hidden;">', unsafe_allow_html=True)
     fig_map = go.Figure()
     for risk, color in RISK_COLORS.items():
         sub = filtered[filtered["risk"]==risk]
@@ -1004,9 +1070,11 @@ elif st.session_state.page == "Peta Kejahatan":
                     font=dict(color='#3D4863', size=12)),
     )
     st.plotly_chart(fig_map, use_container_width=True, config={"displayModeBar":False})
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-    st.markdown('<div style="font-size:13px;font-weight:700;color:#8895B3;margin-bottom:12px;letter-spacing:0.08em;text-transform:uppercase;">Ringkasan per Distrik</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:13px;font-weight:700;color:#6B7A99;margin-bottom:12px;letter-spacing:0.08em;text-transform:uppercase;">Ringkasan per Distrik</div>', unsafe_allow_html=True)
 
     risk_order = {"HIGH_RISK":0,"MEDIUM_HIGH_RISK":1,"MEDIUM_RISK":2,"LOW_RISK":3}
     fs = filtered.copy()
@@ -1022,7 +1090,7 @@ elif st.session_state.page == "Peta Kejahatan":
             <td style="font-family:'DM Mono';color:#1A3A6C;font-weight:500;">Distrik {int(row['district'])}</td>
             <td><span style="background:{bg};color:{c};padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;">{RISK_LABELS[row['risk']]}</span></td>
             <td style="font-family:'DM Mono';">{row['count']:,}</td>
-            <td style="font-family:'DM Mono';color:#8895B3;">{row['lat']:.4f}, {row['lon']:.4f}</td>
+            <td style="font-family:'DM Mono';color:#6B7A99;">{row['lat']:.4f}, {row['lon']:.4f}</td>
         </tr>"""
 
     st.markdown(f"""
@@ -1069,7 +1137,7 @@ elif st.session_state.page == "Perbandingan Model":
         </tr>"""
 
     st.markdown(f"""
-    <div style="font-size:11px;font-weight:700;color:#8895B3;margin-bottom:10px;letter-spacing:0.1em;text-transform:uppercase;">Scorecard {title_sfx}</div>
+    <div style="font-size:11px;font-weight:700;color:#6B7A99;margin-bottom:10px;letter-spacing:0.1em;text-transform:uppercase;">Scorecard {title_sfx}</div>
     <div style="background:#FFFFFF;border:1px solid #E8EBF0;border-radius:14px;overflow:auto;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
         <table class="styled-table">
             <thead><tr><th>Model</th><th>Train Acc</th><th>Test Acc</th><th>Precision</th><th>Recall</th><th>F1-Score</th><th>Overfit Gap</th></tr></thead>
@@ -1077,14 +1145,17 @@ elif st.session_state.page == "Perbandingan Model":
         </table>
     </div>""", unsafe_allow_html=True)
 
-    LIGHT_BG = '#FFFFFF'; GRID_C = '#F0F2F7'; TICK_C = '#8895B3'; FONT_F = 'DM Sans'
-    col_c1, col_c2 = st.columns(2, gap="medium")
+    LIGHT_BG = '#FFFFFF'; GRID_C = '#F0F2F7'; TICK_C = '#6B7A99'; FONT_F = 'DM Sans'
+
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+    col_c1, col_c2 = st.columns(2, gap="large")
     model_names = [r["Model"] for r in data]
     f1_vals     = [r["F1"] for r in data]
     acc_vals    = [r["Test Acc"] for r in data]
     bar_colors  = ["#1A3A6C" if r["best"] else "#D1D8E0" for r in data]
 
     with col_c1:
+        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         fig = go.Figure(go.Bar(
             x=model_names, y=f1_vals, marker=dict(color=bar_colors, opacity=0.85),
             text=[f"{v:.4f}" for v in f1_vals], textposition='outside',
@@ -1098,8 +1169,10 @@ elif st.session_state.page == "Perbandingan Model":
             margin=dict(l=10,r=10,t=44,b=10), height=260, showlegend=False,
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col_c2:
+        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         fig = go.Figure()
         fig.add_trace(go.Bar(x=model_names, y=[r["Train Acc"] for r in data], name="Train Acc", marker=dict(color='#6366F1', opacity=0.7)))
         fig.add_trace(go.Bar(x=model_names, y=acc_vals, name="Test Acc", marker=dict(color='#1A3A6C', opacity=0.8)))
@@ -1113,9 +1186,11 @@ elif st.session_state.page == "Perbandingan Model":
             margin=dict(l=10,r=10,t=44,b=10), height=260,
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-    st.markdown('<div style="font-size:11px;font-weight:700;color:#8895B3;margin-bottom:16px;letter-spacing:0.1em;text-transform:uppercase;">Confusion Matrix — Gradient Boosting (tanpa SMOTE)</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:11px;font-weight:700;color:#6B7A99;margin-bottom:16px;letter-spacing:0.1em;text-transform:uppercase;">Confusion Matrix — Gradient Boosting (tanpa SMOTE)</div>', unsafe_allow_html=True)
 
     class_names = ["HIGH_RISK","LOW_RISK","MEDIUM_HIGH_RISK","MEDIUM_RISK"]
     cm = np.array([[87,12,412,450],[15,54,598,1475],[87,36,3621,3229],[76,80,2694,9008]])
@@ -1135,13 +1210,17 @@ elif st.session_state.page == "Perbandingan Model":
         yaxis=dict(title=dict(text="Aktual",   font=dict(color=TICK_C)), tickfont=dict(size=11, color=TICK_C), autorange='reversed'),
         margin=dict(l=10,r=10,t=20,b=10), height=350,
     )
-    col_cm, col_insight = st.columns([3,2], gap="medium")
+
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+    col_cm, col_insight = st.columns([3,2], gap="large")
     with col_cm:
+        st.markdown('<div class="chart-card" style="padding:16px;">', unsafe_allow_html=True)
         st.plotly_chart(fig_cm, use_container_width=True, config={"displayModeBar":False})
+        st.markdown('</div>', unsafe_allow_html=True)
     with col_insight:
         st.markdown("""
-        <div style="background:#FFFFFF;border:1px solid #E8EBF0;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-            <div style="font-size:11px;font-weight:700;color:#A8B3CC;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">Interpretasi</div>
+        <div style="background:#FFFFFF;border:1px solid #E8EBF0;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);min-height:350px;">
+            <div style="font-size:11px;font-weight:700;color:#6B7A99;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">Interpretasi</div>
             <div style="display:flex;flex-direction:column;gap:8px;">
                 <div style="padding:10px 12px;background:#FEFCE8;border-left:3px solid #CA8A04;border-radius:6px;">
                     <div style="font-size:12px;color:#854D0E;font-weight:700;">MEDIUM_RISK · F1=0.71</div>
@@ -1161,6 +1240,7 @@ elif st.session_state.page == "Perbandingan Model":
                 </div>
             </div>
         </div>""", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
     st.markdown("""
