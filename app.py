@@ -379,12 +379,13 @@ if "page" not in st.session_state:
 # ─────────────────────────────────────────────────────────────
 @st.cache_resource
 def load_model():
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     files = {
-        "model":    "gradient_boosting_model.pkl",
-        "scaler":   "scaler.pkl",
-        "encoder":  "label_encoder.pkl",
-        "features": "feature_columns.json",
-    }
+    "model":    os.path.join(BASE_DIR, "gradient_boosting_model.pkl"),
+    "scaler":   os.path.join(BASE_DIR, "scaler.pkl"),
+    "encoder":  os.path.join(BASE_DIR, "label_encoder.pkl"),
+    "features": os.path.join(BASE_DIR, "feature_columns.json"),
+}
     missing = [v for v in files.values() if not os.path.exists(v)]
     if missing:
         return None, None, None, None, missing
