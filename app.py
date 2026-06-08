@@ -13,13 +13,13 @@ from datetime import datetime
 # ─────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="CrimeScope Chicago",
-    page_icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiHJ4D0iOCIgZmlsbD0iIzFBM0E2QyIvPjxwYXRoIGQ9Ik0xNiA2TDE5IDEzSDI2TDIwIDE3TDIyIDI0TDE2IDIwTDEwIDI0TDEyIDE3TDYgMTNIMTNMMTYgNloiIGZpbGw9IiNGRkZGRkYiLz48L3N2Zz4=",
+    page_icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzFBM0E2QyIvPjxwYXRoIGQ9Ik0xNiA2TDE5IDEzSDI2TDIwIDE3TDIyIDI0TDE2IDIwTDEwIDI0TDEyIDE3TDYgMTNIMTNMMTYgNloiIGZpbGw9IiNGRkZGRkYiLz48L3N2Zz4=",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ─────────────────────────────────────────────────────────────
-# GLOBAL CSS — Clean Elegant Light Theme (FIXED SIDEBAR)
+# GLOBAL CSS — Clean Elegant Light Theme (FIXED)
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -45,7 +45,9 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stAppViewContainer"] h5,
 [data-testid="stAppViewContainer"] h6,
 [data-testid="stAppViewContainer"] label,
-[data-testid="stAppViewContainer"] .stMarkdown {
+[data-testid="stAppViewContainer"] .stMarkdown,
+[data-testid="stAppViewContainer"] .st-emotion-cache-1l03zft,
+[data-testid="stAppViewContainer"] .st-emotion-cache-1q7q0r2 {
     color: #1A1F2E !important;
 }
 
@@ -62,34 +64,42 @@ html, body, [data-testid="stAppViewContainer"] {
     color: #3D4863 !important;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   FIX 2: SIDEBAR — Pastikan SELALU terlihat & toggle berfungsi
-   ═══════════════════════════════════════════════════════════ */
-
-/* Sidebar container - selalu visible */
 [data-testid="stSidebar"] {
     background: #FFFFFF !important;
     border-right: 1px solid #E8EBF0 !important;
     box-shadow: 2px 0 12px rgba(0,0,0,0.04) !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    z-index: 999 !important;
 }
 
 [data-testid="stSidebar"] > div:first-child {
     padding-top: 0 !important;
 }
 
-/* Teks di dalam sidebar tetap gelap */
-[data-testid="stSidebar"] * {
-    color: #1A1F2E !important;
+#MainMenu, footer, header { visibility: hidden; }
+[data-testid="stDecoration"] { display: none; }
+
+/* FIX 2: Sidebar toggle button selalu terlihat saat ditutup */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #1A3A6C !important;
+    color: #FFFFFF !important;
+    border-radius: 0 8px 8px 0 !important;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15) !important;
+    z-index: 999 !important;
+}
+[data-testid="collapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] svg {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
 }
 
-/* Sidebar nav buttons override */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #F7F8FA; }
+::-webkit-scrollbar-thumb { background: #D1D8E0; border-radius: 10px; }
+
+/* Sidebar nav buttons */
 [data-testid="stSidebar"] .stButton > button {
     background: transparent !important;
     border: none !important;
@@ -111,73 +121,6 @@ html, body, [data-testid="stAppViewContainer"] {
     box-shadow: none !important;
     outline: none !important;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 3: SIDEBAR TOGGLE BUTTON — Selalu terlihat saat ditutup
-   ═══════════════════════════════════════════════════════════ */
-
-/* Tombol toggle di kiri atas saat sidebar ditutup */
-button[kind="header"],
-[data-testid="stSidebarCollapsedControl"],
-[data-testid="stSidebar"] + div button,
-header button[data-testid="baseButton-headerNoPadding"] {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: fixed !important;
-    top: 12px !important;
-    left: 12px !important;
-    z-index: 1001 !important;
-    background: #1A3A6C !important;
-    color: #FFFFFF !important;
-    border: none !important;
-    border-radius: 8px !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    padding: 8px !important;
-    box-shadow: 0 2px 8px rgba(26,58,108,0.3) !important;
-    transition: all 0.2s ease !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-button[kind="header"]:hover,
-[data-testid="stSidebarCollapsedControl"]:hover,
-header button[data-testid="baseButton-headerNoPadding"]:hover {
-    background: #16325C !important;
-    transform: scale(1.05) !important;
-    box-shadow: 0 4px 12px rgba(26,58,108,0.4) !important;
-}
-
-/* Icon di dalam toggle button harus putih */
-button[kind="header"] svg,
-[data-testid="stSidebarCollapsedControl"] svg,
-header button[data-testid="baseButton-headerNoPadding"] svg {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
-    stroke: #FFFFFF !important;
-    width: 20px !important;
-    height: 20px !important;
-}
-
-/* Header bar - pastikan tidak menutupi toggle */
-[data-testid="stHeader"] {
-    background: transparent !important;
-    z-index: 998 !important;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   END SIDEBAR FIX
-   ═══════════════════════════════════════════════════════════ */
-
-#MainMenu, footer, header { visibility: hidden; }
-[data-testid="stDecoration"] { display: none; }
-
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #F7F8FA; }
-::-webkit-scrollbar-thumb { background: #D1D8E0; border-radius: 10px; }
 
 /* Primary button */
 .stButton > button[kind="primary"] {
@@ -204,7 +147,7 @@ header button[data-testid="baseButton-headerNoPadding"] svg {
 .stNumberInput > div > div > input,
 .stSlider { font-family: 'DM Sans', sans-serif !important; }
 
-/* Main content container dengan max-width */
+/* FIX 3: Main content container dengan max-width */
 .main-content-wrap {
     max-width: 1280px;
     margin: 0 auto;
@@ -445,7 +388,7 @@ header button[data-testid="baseButton-headerNoPadding"] svg {
 .stat-bar-wrap { width: 80px; height: 5px; background: #F0F2F7; border-radius: 3px; overflow: hidden; }
 .stat-bar { height: 100%; border-radius: 3px; }
 
-/* Chart containers dengan spacing konsisten */
+/* FIX 3: Chart containers dengan spacing konsisten */
 .chart-card {
     background: #FFFFFF;
     border: 1px solid #E8EBF0;
