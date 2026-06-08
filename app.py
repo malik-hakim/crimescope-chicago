@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────
-# GLOBAL CSS — Clean Elegant Light Theme (FIXED)
+# GLOBAL CSS — Clean Elegant Light Theme + SIDEBAR PERMANEN
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -77,22 +77,44 @@ html, body, [data-testid="stAppViewContainer"] {
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
-/* FIX 2: Sidebar toggle button selalu terlihat saat ditutup */
+/* ===== SIDEBAR PERMANEN — HILANGKAN TOMBOL TOGGLE ===== */
+[data-testid="stSidebarCollapsedControl"],
 [data-testid="collapsedControl"],
-[data-testid="stSidebarCollapsedControl"] {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    background: #1A3A6C !important;
-    color: #FFFFFF !important;
-    border-radius: 0 8px 8px 0 !important;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.15) !important;
-    z-index: 999 !important;
+button[kind="icon"][aria-label="Collapse sidebar"],
+button[kind="icon"][aria-label="Expand sidebar"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
 }
-[data-testid="collapsedControl"] svg,
-[data-testid="stSidebarCollapsedControl"] svg {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
+
+/* Pastikan sidebar selalu dalam keadaan expanded secara visual */
+[data-testid="stSidebar"][aria-expanded="false"] {
+    margin-left: 0px !important;
+    transform: translateX(0px) !important;
+    min-width: 300px !important;
+    width: 300px !important;
+}
+
+[data-testid="stSidebar"] {
+    min-width: 300px !important;
+    width: 300px !important;
+    transform: translateX(0px) !important;
+    position: relative !important;
+    transition: none !important;
+}
+
+/* Konten utama tidak perlu memberikan margin ekstra karena sidebar fixed */
+@media (min-width: 992px) {
+    section[data-testid="stSidebar"] ~ div[data-testid="stToolbar"] ~ div[data-testid="stAppViewBlockContainer"] {
+        margin-left: 0 !important;
+    }
+}
+
+/* Hapus animasi collapse/expand */
+[data-testid="stSidebar"] * {
+    transition-property: none !important;
 }
 
 ::-webkit-scrollbar { width: 5px; }
@@ -147,7 +169,7 @@ html, body, [data-testid="stAppViewContainer"] {
 .stNumberInput > div > div > input,
 .stSlider { font-family: 'DM Sans', sans-serif !important; }
 
-/* FIX 3: Main content container dengan max-width */
+/* Main content container */
 .main-content-wrap {
     max-width: 1280px;
     margin: 0 auto;
@@ -388,7 +410,7 @@ html, body, [data-testid="stAppViewContainer"] {
 .stat-bar-wrap { width: 80px; height: 5px; background: #F0F2F7; border-radius: 3px; overflow: hidden; }
 .stat-bar { height: 100%; border-radius: 3px; }
 
-/* FIX 3: Chart containers dengan spacing konsisten */
+/* Chart containers */
 .chart-card {
     background: #FFFFFF;
     border: 1px solid #E8EBF0;
