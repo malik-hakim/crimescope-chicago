@@ -93,10 +93,46 @@ html, body, [data-testid="stAppViewContainer"] {
     transform: translateY(-1px) !important;
 }
 
-/* Streamlit form elements */
-.stSelectbox > div > div,
-.stNumberInput > div > div > input,
-.stSlider { font-family: 'DM Sans', sans-serif !important; }
+/* ── Sidebar collapsed button ── */
+[data-testid="collapsedControl"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #1A3A6C !important;
+    color: white !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+
+/* ── Widget overrides (light theme) ── */
+.stSelectbox > div > div {
+    background: #FFFFFF !important;
+    color: #1A1F2E !important;
+    border: 1px solid #E8EBF0 !important;
+    border-radius: 8px !important;
+}
+.stSelectbox label, .stSlider label, .stNumberInput label, .stRadio label {
+    color: #3D4863 !important;
+    font-weight: 500 !important;
+}
+.stSlider > div > div > div {
+    background: #1A3A6C !important;
+}
+.stRadio > div {
+    flex-direction: row;
+    gap: 12px;
+}
+.stRadio label p {
+    color: #3D4863 !important;
+}
+.stNumberInput input {
+    color: #1A1F2E !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E8EBF0 !important;
+    border-radius: 8px !important;
+}
+[data-testid="stMarkdownContainer"] p {
+    color: #3D4863 !important;
+}
 
 /* Metric card */
 .metric-card {
@@ -108,6 +144,7 @@ html, body, [data-testid="stAppViewContainer"] {
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: box-shadow 0.2s, transform 0.2s;
+    min-height: 140px;              /* konsisten tinggi */
 }
 .metric-card:hover {
     box-shadow: 0 6px 24px rgba(0,0,0,0.08);
@@ -159,7 +196,7 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 
 /* Divider */
-.divider { height: 1px; background: #E8EBF0; margin: 28px 0; }
+.divider { height: 1px; background: #E8EBF0; margin: 32px 0; }  /* lebih lega */
 
 /* Brand header sidebar */
 .brand-wrap {
@@ -191,6 +228,7 @@ html, body, [data-testid="stAppViewContainer"] {
     border: 1.5px solid;
     background: #FFFFFF;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    min-height: 200px;            /* biar sejajar form */
 }
 .result-label {
     font-size: 11px;
@@ -257,6 +295,7 @@ html, body, [data-testid="stAppViewContainer"] {
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    min-height: 400px;            /* agar sejajar result */
 }
 .form-label {
     font-size: 11px;
@@ -563,7 +602,7 @@ if st.session_state.page == "Home":
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
     # Metric cards
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4, gap="medium")
     metrics = [
         (col1, "107,687", "Total Data",      "Baris dari 4 file Chicago",   "#1A3A6C"),
         (col2, "25",      "Distrik",         "Area kota Chicago",            "#4F46E5"),
@@ -591,7 +630,7 @@ if st.session_state.page == "Home":
         ("MEDIUM_RISK",      "#CA8A04", "#FEFCE8", "#FEF9C3", "Pencurian, Vandalisme, Narkotika, Penipuan, Pelanggaran Senjata"),
         ("LOW_RISK",         "#16A34A", "#F0FDF4", "#DCFCE7", "Pelanggaran Ringan, Perjudian, Gangguan Ketertiban, Pelanggaran Izin"),
     ]
-    cols = st.columns(4)
+    cols = st.columns(4, gap="medium")
     for col, (risk, color, bg, border_bg, desc) in zip(cols, risk_info):
         with col:
             st.markdown(f"""
@@ -826,7 +865,7 @@ elif st.session_state.page == "Analisis Data":
     TICK_C   = '#8895B3'
     FONT_F   = 'DM Sans'
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2, gap="medium")
     with col1:
         counts = demo_df["Risk_Category"].value_counts()
         fig = go.Figure(go.Bar(
@@ -865,7 +904,7 @@ elif st.session_state.page == "Analisis Data":
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
 
-    col3, col4 = st.columns(2)
+    col3, col4 = st.columns(2, gap="medium")
     with col3:
         month_names = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"]
         mc = demo_df.groupby("Month").size().reset_index(name="count")
@@ -941,7 +980,7 @@ elif st.session_state.page == "Peta Kejahatan":
     ]
     map_df = pd.DataFrame(district_data)
 
-    fc, _ = st.columns([2,3])
+    fc, _ = st.columns([2,3], gap="medium")
     with fc:
         risk_filter = st.multiselect("Filter Tingkat Risiko", options=list(RISK_LABELS.values()), default=list(RISK_LABELS.values()))
     label_to_key = {v:k for k,v in RISK_LABELS.items()}
@@ -1039,7 +1078,7 @@ elif st.session_state.page == "Perbandingan Model":
     </div>""", unsafe_allow_html=True)
 
     LIGHT_BG = '#FFFFFF'; GRID_C = '#F0F2F7'; TICK_C = '#8895B3'; FONT_F = 'DM Sans'
-    col_c1, col_c2 = st.columns(2)
+    col_c1, col_c2 = st.columns(2, gap="medium")
     model_names = [r["Model"] for r in data]
     f1_vals     = [r["F1"] for r in data]
     acc_vals    = [r["Test Acc"] for r in data]
@@ -1096,7 +1135,7 @@ elif st.session_state.page == "Perbandingan Model":
         yaxis=dict(title=dict(text="Aktual",   font=dict(color=TICK_C)), tickfont=dict(size=11, color=TICK_C), autorange='reversed'),
         margin=dict(l=10,r=10,t=20,b=10), height=350,
     )
-    col_cm, col_insight = st.columns([3,2])
+    col_cm, col_insight = st.columns([3,2], gap="medium")
     with col_cm:
         st.plotly_chart(fig_cm, use_container_width=True, config={"displayModeBar":False})
     with col_insight:
